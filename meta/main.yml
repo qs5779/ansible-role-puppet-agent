@@ -1,0 +1,31 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: puppet_agent
+  author: qs5779
+  description: Puppet Agent for Linux.
+  # company: "Midwestern Mac, LLC"
+  license: "license MIT"
+  min_ansible_version: 2.4
+  platforms:
+    - name: EL
+      versions:
+        - 7
+        - 8
+    - name: Debian
+      versions:
+        - stretch
+        - buster
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+        - focal
+  galaxy_tags:
+    - system
+    - configuration
+    - cm
+    - orchestration
+    - agent
+    - puppet

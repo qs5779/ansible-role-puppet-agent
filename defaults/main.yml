@@ -1,0 +1,19 @@
+---
+puppet_package: puppet-agent
+
+# only 6 or 7 as of 20220103
+puppet_version: 7
+
+puppet_service: puppet
+puppet_service_state: stopped
+puppet_service_enabled: false
+puppet_service_manage: false
+
+puppet_bin_path: /opt/puppetlabs/bin
+
+# Used only for Debian/Ubuntu.
+dist_codename_deb: "{{ ansible_distribution_release }}"
+puppet_apt_deb: "https://apt.puppetlabs.com/puppet{{ puppet_version }}-release-{{ dist_codename_deb }}.deb"
+
+# Used only for RedHat/CentOS.
+puppet_yum_rpm: "https://yum.puppet.com/puppet{{ puppet_version }}-release-el-{{ ansible_distribution_major_version }}.noarch.rpm"

@@ -1,0 +1,37 @@
+---
+# - name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+#   include_vars: "{{ lookup('first_found', params) }}"
+#   vars:
+#     params:
+#       files:
+#         - '{{ansible_distribution_release}}.yml'
+#         - default.yml
+#       paths:
+#         - 'vars'
+
+- name: Ensure dependencies are installed.
+  apt:
+    name:
+      - gnupg2
+      - apt-transport-https
+      - ca-certificates
+      - xz-utils
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Add Puppet Labs apt key.
+  apt_key:
+    url: https://apt.puppetlabs.com/DEB-GPG-KEY-puppet-20250406
+    state: present
+
+- name: Add Puppet Labs repository.
+  apt:
+    deb: "{{ puppet_apt_deb }}"
+    state: present
+  register: puppet_apt_deb_install
+
+- name: Update apt cache if necessary.
+  apt: update_cache=true
+  when: puppet_apt_deb_install.changed
+  tags: ['skip_ansible_lint']
