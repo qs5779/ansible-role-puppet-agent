@@ -27,18 +27,9 @@
     value: "{{ item.value }}"
     backup: true
   with_items:
-    - { section: "agent", option: "runinterval", value: "{{ puppet_agent_config_runinterval }}" }
-    - { section: "agent", option: "environment", value: "{{ puppet_agent_config_environment }}" }
-    - { section: "agent", option: "certname", value: "{{ puppet_agent_config_certname }}" }
-
-# - name: Ensure "fav=lemonade is in section "[agent]" in specified file
-#   community.general.ini_file:
-#     path: "{{ puppet_conf_path }}"
-#     section: agent
-#     option: runinterval
-#     value: "{{ puppet_conf_path }}"
-#     mode: '0600'
-#     backup: yes
+    - {section: "agent", option: "runinterval", value: "{{ puppet_agent_config_runinterval }}"}
+    - {section: "agent", option: "environment", value: "{{ puppet_agent_config_environment }}"}
+    - {section: "agent", option: "certname", value: "{{ puppet_agent_config_certname }}"}
 
 - name: Ensure Puppet service is started and enabled at boot.
   service:
