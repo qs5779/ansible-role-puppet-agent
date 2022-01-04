@@ -1,12 +1,12 @@
 # Ansible Role: Puppet-Agent
 
-[![CI](https://github.com/geerlingguy/ansible-role-puppet/workflows/CI/badge.svg?event=push)](https://github.com/geerlingguy/ansible-role-puppet/actions?query=workflow%3ACI)
+[![CI](https://github.com/qs5779/ansible-role-puppet-agent/workflows/CI/badge.svg?event=push)](https://github.com/qs5779/ansible-role-puppet-agent/actions?query=workflow%3ACI)
 
-An Ansible Role that installs [Puppet-agent](https://www.docker.com) on Linux.
+An Ansible Role that installs [Puppet-agent](https://www.puppet.com) on Linux.
 
 ## Requirements
 
-Requires Java 7 or later to be installed on the server (you can use the `geerlingguy.java` role to install Java if needed; see the test playbook in `tests/` for an example).
+None.
 
 ## Role Variables
 
@@ -28,8 +28,23 @@ The service that should be run on this server. By default, this role will not ma
 
 The path to all the Puppet Labs binaries (after the package is installed).
 
+    puppet_conf_path: /etc/puppetlabs/puppet/puppet.conf
+
+The path to all the Puppet Labs config file (after the package is installed).
+
+    puppet_agent_config_runinterval: 10800
+    puppet_agent_config_environment: production
+    puppet_agent_config_certname: "{{ ansible_fqdn }}"
+
+Puppet agent configuration values
+
     # Used only for Debian/Ubuntu.
-    puppet_apt_deb: "https://apt.puppetlabs.com/puppet{{ puppet_version }}-release-{{ ansible_distribution_release }}.deb"
+        # puppet only provides packages for LTS debian version, we default the dist_codename_deb to the
+        #  to the ansible_distribution_release release fact, when installing for example 21.10 impish
+        #  override the dist_codename_deb default by setting the var dist_codename_deb to focal via commandline
+        #  or playbook.
+    dist_codename_deb: "{{ ansible_distribution_release }}"
+    puppet_apt_deb: "https://apt.puppetlabs.com/puppet{{ puppet_version }}-release-{{ dist_codename_deb }}.deb"
 
 The .deb file for installation on Debian-based OSes.
 
@@ -44,9 +59,17 @@ None.
 
 ## Example Playbook
 
-    - hosts: all
-      roles:
-        - qs5779.puppet_agent
+```yaml
+---
+- hosts: focal.example.net
+  roles:
+    - { name: qs5779.puppet_agent }
+- hosts: impish.example.net
+  vars:
+    dist_codename_deb: focal
+  roles:
+    - { name: qs5779.puppet_agent, become: true }
+```
 
 ## License
 

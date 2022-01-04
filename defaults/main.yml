@@ -11,7 +11,18 @@ puppet_service_manage: false
 
 puppet_bin_path: /opt/puppetlabs/bin
 
+puppet_conf_path: /etc/puppetlabs/puppet/puppet.conf
+
+puppet_agent_config_runinterval: 10800
+puppet_agent_config_environment: production
+puppet_agent_config_certname: "{{ ansible_fqdn }}"
+
 # Used only for Debian/Ubuntu.
+# puppet only provides package for LTS debian version, we default the dist_codename_deb to the
+#  to the ansible_distribution_release release fact, when installing for 21.10 impish
+#  override the dist_codename_deb default by setting the var dist_codename_deb to focal via commandline
+#  or playbook.
+
 dist_codename_deb: "{{ ansible_distribution_release }}"
 puppet_apt_deb: "https://apt.puppetlabs.com/puppet{{ puppet_version }}-release-{{ dist_codename_deb }}.deb"
 
